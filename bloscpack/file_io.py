@@ -330,6 +330,33 @@ def _write_compressed_chunk(output_fp, compressed, digest):
         output_fp.write(digest)
 
 
+class MemoryViewIO(object):
+
+    def __init__(self, buffer_):
+        self.buffer_ = buffer_
+        self.position = 0
+        self.length = len(buffer_)
+
+    def read(self, size):
+        start = self.position
+        end = self.position + size
+        self.position = end
+        return buffer(self.buffer_, start, size)
+
+    def tell(self):
+        return self.position
+
+    def seek(self, offset, whence=0):
+        if whence == 0:
+            self.position = offset
+        elif whence == 1:
+            self.position = self.position + offset
+        elif whence == 2:
+            self.position = self.length + offset
+        else:
+            raise ValueError
+
+
 class PlainFPSource(PlainSource):
 
     def __init__(self, input_fp):
