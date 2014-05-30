@@ -17,4 +17,5 @@ from .numpy_io import (pack_ndarray_file,
                        unpack_ndarray_file,
                        pack_ndarray_str,
                        unpack_ndarray_str,
+                       fast_unpack_ndarray_str,
                        )

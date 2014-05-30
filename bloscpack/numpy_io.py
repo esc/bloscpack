@@ -15,8 +15,10 @@ from .abstract_io import(pack,
                          )
 from .file_io import (CompressedFPSource,
                       CompressedFPSink,
+                      MemoryViewIO,
                       )
 from .args import (BloscArgs,
+                   MetadataArgs,
                    calculate_nchunks,
                    )
 from .defaults import (DEFAULT_CHUNK_SIZE,
@@ -121,6 +123,9 @@ def pack_ndarray(ndarray, sink,
     source = PlainNumpySource(ndarray)
     nchunks, chunk_size, last_chunk_size = \
         calculate_nchunks(source.size, chunk_size)
+    metadata_args = MetadataArgs(meta_checksum='None',
+                                 meta_codec='None',
+                                 max_meta_size=lambda x: x)
     pack(source, sink,
          nchunks, chunk_size, last_chunk_size,
          metadata=source.metadata,
@@ -192,5 +197,11 @@ def unpack_ndarray_file(filename):
 
 def unpack_ndarray_str(str_):
     sio = cStringIO.StringIO(str_)
+    source = CompressedFPSource(sio)
+    return unpack_ndarray(source)
+
+
+def fast_unpack_ndarray_str(str_):
+    sio = MemoryViewIO(str_)
     source = CompressedFPSource(sio)
     return unpack_ndarray(source)
