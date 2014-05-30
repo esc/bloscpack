@@ -30,6 +30,8 @@ class Serializer(object):
         return self._dumps(dict_)
 
     def loads(self, data):
+        if not isinstance(data, str):
+            data = str(data)
         return self._loads(data)
 
 
