@@ -237,9 +237,9 @@ In addition, there are the following options that control the Bloscpack file:
   Chose which checksum to use. The following values are permissible:
   ``None``, ``adler32``, ``crc32``, ``md5``,
   ``sha1``, ``sha224``, ``sha256``, ``sha384``,
-  ``sha512``, (default: ``adler32``). As described in the header format, each
-  compressed chunk can be stored with a checksum, which aids corruption
-  detection on decompression:
+  ``sha512``, ``xxhash``, (default: ``adler32``).
+  As described in the header format, each compressed chunk can be stored with a
+  checksum, which aids corruption detection on decompression:
   ``$ blpk compress --checksum crc32 data.dat``
 * ``[-o | --no-offsets]``
   By default, offsets to the individual chunks are stored. These are included
@@ -775,6 +775,8 @@ All entries are little-endian.
         ``hashlib.sha384``
     :``8``:
         ``hashlib.sha512``
+    :``9``:
+        ``xxhash``
 :typesize:
     (``uint8``)
     The typesize of the data in the chunks. Currently, assume that the typesize
