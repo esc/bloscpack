@@ -7,6 +7,7 @@ import hashlib
 import struct
 import zlib
 
+from pyhashxx import hashxx
 
 from .exceptions import (NoSuchChecksum,
                          )
@@ -53,6 +54,11 @@ def hashlib_hash(func):
         return func(data).digest()
     return func().digest_size, hash_
 
+def xxhash_hash():
+    def hash_(data):
+        return struct.pack('<I', hashxx(data))
+    return 4, hash_
+
 
 CHECKSUMS = [Hash('None', 0, lambda data: b''),
              Hash('adler32', *zlib_hash(zlib.adler32)),
@@ -63,6 +69,7 @@ CHECKSUMS = [Hash('None', 0, lambda data: b''),
              Hash('sha256', *hashlib_hash(hashlib.sha256)),
              Hash('sha384', *hashlib_hash(hashlib.sha384)),
              Hash('sha512', *hashlib_hash(hashlib.sha512)),
+             Hash('xxhash', *xxhash_hash()),
              ]
 CHECKSUMS_AVAIL = [c.name for c in CHECKSUMS]
 CHECKSUMS_LOOKUP = dict(((c.name, c) for c in CHECKSUMS))

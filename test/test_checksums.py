@@ -10,7 +10,7 @@ from bloscpack import checksums
 
 
 def test_checksusm_exist():
-    nt.assert_equal(len(checksums.CHECKSUMS), 9)
+    nt.assert_equal(len(checksums.CHECKSUMS), 10)
     checksums_avail = ['None',
                        'adler32',
                        'crc32',
@@ -19,7 +19,8 @@ def test_checksusm_exist():
                        'sha224',
                        'sha256',
                        'sha384',
-                       'sha512']
+                       'sha512',
+                       'xxhash']
     nt.assert_equal(checksums.CHECKSUMS_AVAIL, checksums_avail)
 
 
@@ -40,6 +41,7 @@ def test_checksusm_are_sane():
         b'\x12w\xc9V/\x84\xe4\x0cd\xf0@\xd2U:Ae\xd9\x9b\xfbm\xe2^*\xdc\x96KG' +
         b'\x06\xa9\xc7\xee\x02\x1d\xac\x08\xf3\x9a*/\x02\x8b\x89\xa0\x0b' +
         b'\xa5=r\xd2\x9b\xf5Z\xf0\xe9z\xb6d\xa7\x00\x12<7\x11\x08e',
+        b'\x90U\xe2\x82',
         ]
     for i, csum in enumerate(checksums.CHECKSUMS):
         digest = csum(b"\x23\x42\xbe\xef")
