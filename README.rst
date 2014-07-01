@@ -59,9 +59,10 @@ Dependencies
 
 * Python 2.6 (requires packages listed in ``setup.py``) or Python
   2.7
-* `python-blosc  <https://github.com/Blosc/python-blosc>`_ (provides Blosc) and
-  `Numpy <http://www.numpy.org/>`_ (as listed in ``requirements.txt`` for
-  running the code
+* `python-blosc  <https://github.com/Blosc/python-blosc>`_ (provides Blosc),
+  `Numpy <http://www.numpy.org/>`_ and `pyhashxx
+  <https://pypi.python.org/pypi/pyhashxx/>`_ (as listed in ``requirements.txt``
+  for running the code
 * The Python packages listed in ``test_requirements.txt`` for testing
 
 Stability of File Format
