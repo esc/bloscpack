@@ -313,9 +313,8 @@ def create_parser():
                                      default=DEFAULT_CHUNK_SIZE,
                                      dest='chunk_size',
                                      help="set desired chunk size or 'max'")
-        checksum_format = join_with_eol(CHECKSUMS_AVAIL[0:3]) + \
-                                        join_with_eol(CHECKSUMS_AVAIL[3:6]) + \
-                                        join_with_eol(CHECKSUMS_AVAIL[6:])
+        checksum_format = join_with_eol(CHECKSUMS_AVAIL[0:5] + [""]) + \
+                                        join_with_eol(CHECKSUMS_AVAIL[5:])
         checksum_help = 'set desired checksum:\n' + checksum_format
         bloscpack_group.add_argument('-k', '--checksum',
                                      metavar='<checksum>',
