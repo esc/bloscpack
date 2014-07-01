@@ -16,6 +16,8 @@ from bloscpack.args import (BloscArgs,
                             calculate_nchunks,
                             )
 from bloscpack.compat_util import StringIO
+from bloscpack.checksums import (CHECKSUMS_AVAIL,
+                                 )
 from bloscpack.constants import (MAX_FORMAT_VERSION,
                                  BLOSCPACK_HEADER_LENGTH,
                                  BLOSC_HEADER_LENGTH,
@@ -200,7 +202,7 @@ def pack_unpack(repeats, chunk_size=None, progress=False):
 
 
 def pack_unpack_fp(repeats, chunk_size=DEFAULT_CHUNK_SIZE,
-                   progress=False, metadata=None):
+                   progress=False, bloscpack_args=None, metadata=None):
     in_fp, out_fp, dcmp_fp = StringIO(), StringIO(), StringIO()
     if progress:
         print("Creating test array")
@@ -215,6 +217,7 @@ def pack_unpack_fp(repeats, chunk_size=DEFAULT_CHUNK_SIZE,
     sink = CompressedFPSink(out_fp)
     pack(source, sink,
          nchunks, chunk_size, last_chunk_size,
+         bloscpack_args=bloscpack_args,
          metadata=metadata)
     out_fp.seek(0)
     if progress:
@@ -240,6 +243,11 @@ def test_pack_unpack_fp():
     pack_unpack_fp(1, chunk_size=reverse_pretty('2M'))
     pack_unpack_fp(1, chunk_size=reverse_pretty('4M'))
     pack_unpack_fp(1, chunk_size=reverse_pretty('8M'))
+
+def test_checksum_roundtrip():
+    for checksum in CHECKSUMS_AVAIL:
+        pack_unpack_fp(1, chunk_size=reverse_pretty('8M'),
+                bloscpack_args=BloscpackArgs(checksum=checksum))
 
 
 def pack_unpack_hard():
